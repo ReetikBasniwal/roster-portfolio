@@ -4,10 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link2, Loader2 } from "lucide-react";
-import { createPortfolio } from "@/utils/mockApi";
-import { generateUsername } from "@/lib/utils";
+import { createPortfolio } from "@/api/mockApi";
 import { useAppDispatch } from "@/hooks/reduxHooks";
-import { addUser } from "@/redux/counterSlice";
+import { addProfile } from "@/redux/counterSlice";
 import { useNavigate } from "react-router-dom";
 
 const PortfolioSubmit = () => {
@@ -38,13 +37,8 @@ const PortfolioSubmit = () => {
 
     try {
         const portfolio = await createPortfolio(portfolioUrl)
-        const username = generateUsername(`${portfolio.extractedData.basicInfo.firstName} ${portfolio.extractedData.basicInfo.lastName}`)
-        const user = {
-          username,
-          portfolio
-        }
-        dispatch(addUser(user));
-        navigate(`/${username}`)
+        dispatch(addProfile(portfolio));
+        navigate(`/${portfolio.extractedData.basicInfo.username}`)
     } catch (err: unknown) {
       if (err instanceof Error) console.error(err.message);
       else console.error("An unknown error occurred", err);
