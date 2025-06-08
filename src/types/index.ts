@@ -19,16 +19,14 @@ export interface BasicInfo {
   profileImage?: string;
   location?: string;
   email?: string;
+  username: string;
+  title?: string;
 }
 
 export interface Employer {
   id: string;
   name: string;
-  jobTitle?: string;
-  duration?: {
-    startDate: string;
-    endDate?: string;
-  };
+  jobTitle: string;
   employmentType?: "full-time" | "contract" | "freelance" | "internship";
   summary?: string;
   videos: Video[];
