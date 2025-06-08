@@ -72,16 +72,16 @@ const EditableField = ({
 
   return (
     <div className="group relative">
-      <div className={`${displayClassName} cursor-pointer`} onClick={() => setIsEditing(true)}>
+      <div className={`${displayClassName} cursor-pointer`}>
         {value || placeholder}
       </div>
       <Button
         variant="ghost"
         size="sm"
-        className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" 
         onClick={() => setIsEditing(true)}
       >
-        <Edit2 className="h-3 w-3" />
+        <Edit2 className="h-3 w-3"/>
       </Button>
     </div>
   );

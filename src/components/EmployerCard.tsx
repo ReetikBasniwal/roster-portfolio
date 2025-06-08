@@ -16,8 +16,16 @@ const EmployerCard = ({ employer, onUpdateEmployer }: EmployerCardProps) => {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Briefcase className="h-5 w-5" />
-          {employer.name}
+          <Briefcase className="h-5 w-5 mt-1 flex-shrink-0 place-self-start" />
+          <div className="flex-1">
+            <EditableField
+              label=""
+              value={employer.name}
+              onSave={(value) => onUpdateEmployer({ name: value })}
+              placeholder="Enter employer name"
+              displayClassName="text-lg font-semibold"
+            />
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">

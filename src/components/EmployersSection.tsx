@@ -1,20 +1,33 @@
 import { Employer } from "@/types";
 import EmployerCard from "./EmployerCard";
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { updateEmployer } from '@/redux/counterSlice'
 
 interface EmployersSectionProps {
   employers: Employer[];
-  onUpdateEmployer: (employerId: string, updates: Partial<Employer>) => void;
 }
 
-const EmployersSection = ({ employers, onUpdateEmployer }: EmployersSectionProps) => {
+const EmployersSection = ({ employers }: EmployersSectionProps) => {
+
+    const dispatch = useAppDispatch();
+
+    const updateEmployerDetail = (currentEmployer: Employer, updatedEmployer: Partial<Employer>) => {
+        const updatedEmployersData = {
+            ...currentEmployer,
+            ...updatedEmployer
+        }
+        
+        dispatch(updateEmployer(updatedEmployersData));
+    }
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Experience & Work</h2>
       {employers.map(employer => (
-        <EmployerCard
+        <EmployerCard 
           key={employer.id}
           employer={employer}
-          onUpdateEmployer={(updates) => onUpdateEmployer(employer.id, updates)}
+          onUpdateEmployer={(updates) => updateEmployerDetail(employer, updates)}
         />
       ))}
     </div>

@@ -6,7 +6,7 @@ import NotFound from './NotFound'
 import EmployersSection from './EmployersSection'
 import { addProfile, updateBasicInfo } from '@/redux/counterSlice'
 import { useNavigate } from 'react-router-dom'
-import { BasicInfo, Employer } from '@/types'
+import { BasicInfo } from '@/types'
 
 const Portfolio = () => {
 
@@ -25,22 +25,6 @@ const Portfolio = () => {
             ...updatedValues
         }
         dispatch(updateBasicInfo(newBasicInfo))
-    }
-
-    const updateEmployer = (employerId: string, updates: Partial<Employer>) => {
-        if (profile) {
-            const updatedEmployers = profile.extractedData.employers.map(employer => 
-                employer.id === employerId ? { ...employer, ...updates } : employer
-            );
-            
-            dispatch(addProfile({
-                ...profile,
-                extractedData: {
-                    ...profile.extractedData,
-                    employers: updatedEmployers
-                }
-            }));
-        }
     }
 
     if(!profile || !profile.extractedData) {
@@ -67,7 +51,6 @@ const Portfolio = () => {
           
           <EmployersSection 
             employers={profile.extractedData.employers}
-            onUpdateEmployer={updateEmployer}
           />
         </div>
       </div>
