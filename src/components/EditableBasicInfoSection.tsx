@@ -5,8 +5,10 @@ import { useFormik } from "formik";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useAppDispatch } from "@/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
+import { updatePortfolio } from "@/api/mockApi";
 import { updateBasicInfo } from "@/redux/counterSlice";
+import { toast } from "sonner";
 
 interface EditableBasicInfoSectionProps {
   info: BasicInfo;
@@ -25,6 +27,7 @@ const EditableBasicInfoSection: React.FC<EditableBasicInfoSectionProps> = ({
   handleCancel,
 }) => {
   const dispatch = useAppDispatch();
+  const profile = useAppSelector((state) => state.portfolio.profile);
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -41,12 +44,29 @@ const EditableBasicInfoSection: React.FC<EditableBasicInfoSectionProps> = ({
       return errors;
     },
     onSubmit: (values: FormValues) => {
+      if (!profile) return;
       const updatedInfo: BasicInfo = {
         ...info,
         ...values,
       };
-      dispatch(updateBasicInfo(updatedInfo));
-      handleCancel();
+      try {
+        dispatch(updateBasicInfo(updatedInfo));
+        handleCancel();
+
+        const domain = 'sonuchoudhary.my.canva.site'; // This should come from your profile data
+        updatePortfolio(domain, {
+          basicInfo: updatedInfo
+        }).then((data) => {
+          console.log(data);
+          toast.success("Basic info updated successfully");
+        }).catch((error) => {
+          toast.error("Failed to update basic info");
+          console.error('Failed to update basic info:', error);
+        });
+      } catch (error) {
+        toast.error("Failed to update basic info");
+        console.error('Failed to update basic info:', error);
+      }
     },
   });
 

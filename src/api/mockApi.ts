@@ -180,16 +180,32 @@ export async function createPortfolio(url: string): Promise<Portfolio> {
 }
 
 export async function updatePortfolio(portfolioId: string, updates: Partial<ExtractedPortfolioData>): Promise<Portfolio> {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 500))
   
-  // In a real app, this would update the portfolio in the database
-  // For now, we'll just return a mock updated portfolio
+  // Find the domain that matches the portfolioId
+  const domain = Object.keys(mockPortfolioData).find(key => key === portfolioId);
+  if (!domain) {
+    throw new Error('Portfolio not found');
+  }
+
+  const existingData = mockPortfolioData[domain];
+  const updatedData: ExtractedPortfolioData = {
+    ...existingData,
+    ...updates,
+    employers: existingData.employers.map(emp => 
+      emp.id === updates.employers?.[0]?.id 
+        ? { ...emp, ...(updates.employers?.[0] || {}) }
+        : emp
+    ),
+  };
+
+  mockPortfolioData[domain] = updatedData;
+  
   return {
-    id: portfolioId,
-    url: 'https://example.com',
-    extractedData: updates as ExtractedPortfolioData,
+    id: domain,
+    url: `https://${domain}`,
+    extractedData: updatedData,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
-  }
+  };
 }

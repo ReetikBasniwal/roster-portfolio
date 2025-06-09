@@ -13,9 +13,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import VideoGallery from "./VideoGallery";
-import { useAppDispatch } from "@/hooks/reduxHooks";
-import { updateEmployer } from "@/redux/counterSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
+import { updatePortfolio } from "@/api/mockApi";
 import { Textarea } from "@/components/ui/textarea";
+import { updateEmployer } from "@/redux/counterSlice";
+import { toast } from "sonner";
 
 interface EditableEmployerCardProps {
   employer: Employer;
@@ -46,6 +48,7 @@ const EditableEmployerCard: React.FC<EditableEmployerCardProps> = ({
   handleCancel,
 }) => {
   const dispatch = useAppDispatch();
+  const profile = useAppSelector((state) => state.portfolio.profile);
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -63,13 +66,28 @@ const EditableEmployerCard: React.FC<EditableEmployerCardProps> = ({
       return errors;
     },
     onSubmit: (values: FormValues) => {
+      if (!profile) return;
       const updatedEmployer: Employer = {
         ...employer,
         ...values,
       };
-      console.log(values, employer, updatedEmployer, "values");
-      dispatch(updateEmployer(updatedEmployer));
-      handleCancel();
+      try {
+        dispatch(updateEmployer(updatedEmployer));
+        handleCancel();
+
+        updatePortfolio(profile.id, {
+          employers: [updatedEmployer]
+        }).then((data) => {
+          console.log(data);
+          toast.success("Employer info updated successfully");
+        }).catch((error) => {
+          toast.error("Failed to update employer info");
+          console.error('Failed to update employer:', error);
+        });
+      } catch (error) {
+        toast.error("Failed to update employer info");
+        console.error('Failed to update employer:', error);
+      }
     },
   });
 
