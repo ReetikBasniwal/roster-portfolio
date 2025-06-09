@@ -20,16 +20,18 @@ export interface BasicInfo {
   location?: string;
   email?: string;
   username: string;
-  title?: string;
+  title: string;
 }
 
 export interface Employer {
   id: string;
   name: string;
   jobTitle: string;
-  employmentType?: "Full-time" | "Contract" | "Freelance" | "Internship";
+  employmentType?: "full-time" | "contract" | "freelance" | "internship";
   summary?: string;
   videos: Video[];
+  startTime?: string;
+  endTime?: string;
 }
 
 export interface Video {

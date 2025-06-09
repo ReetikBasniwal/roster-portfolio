@@ -4,9 +4,8 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
 import BasicInfoSection from './BasicInfoSection'
 import NotFound from './NotFound'
 import EmployersSection from './EmployersSection'
-import { addProfile, updateBasicInfo } from '@/redux/counterSlice'
+import { addProfile } from '@/redux/counterSlice'
 import { useNavigate } from 'react-router-dom'
-import { BasicInfo } from '@/types'
 
 const Portfolio = () => {
 
@@ -17,14 +16,6 @@ const Portfolio = () => {
     const onBack = () => {
         dispatch(addProfile(null));
         navigate('/');
-    }
-
-    const onUpdateBasicInfo = (currentData: BasicInfo, updatedValues: Partial<BasicInfo>) => {
-        const newBasicInfo = {
-            ...currentData,
-            ...updatedValues
-        }
-        dispatch(updateBasicInfo(newBasicInfo))
     }
 
     if(!profile || !profile.extractedData) {
@@ -46,7 +37,6 @@ const Portfolio = () => {
         <div className="space-y-6">
           <BasicInfoSection 
             info={profile.extractedData.basicInfo}
-            onUpdateProfile={(updates: Partial<BasicInfo>) => onUpdateBasicInfo(profile.extractedData.basicInfo, updates)}
           />
           
           <EmployersSection 

@@ -19,7 +19,9 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
         id: '1',
         name: 'Creative Agency XYZ',
         jobTitle: 'Video Editor',
-        employmentType: 'Full-time',
+        employmentType: 'full-time',
+        startTime: '2023-12-31T00:00:00Z',
+        endTime: '2024-03-20T00:00:00Z',
         videos: [
           {
             id: 'v1',
@@ -41,7 +43,7 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
         id: '2',
         name: 'Tech Startup ABC',
         jobTitle: 'Video Editor',
-        employmentType: 'Freelance',
+        employmentType: 'freelance',
         videos: [
           {
             id: 'v4',
@@ -70,7 +72,7 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
         id: '4',
         name: 'Commercial Productions',
         jobTitle: 'Editor, Director, Producer, Writer',
-        employmentType: 'Freelance',
+        employmentType: 'freelance',
         videos: [
           {
             id: 'v5',
@@ -99,7 +101,7 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
         id: '3',
         name: 'Documentary Films Inc',
         jobTitle: 'Videographer',
-        employmentType: 'Full-time',
+        employmentType: 'full-time',
         videos: [
           {
             id: 'v4',
@@ -144,6 +146,8 @@ export async function extractPortfolioData(url: string): Promise<ExtractedPortfo
         id: '5',
         name: 'Generic Creative Agency',
         jobTitle: 'Thumbnail Designer',
+        startTime: '2023-12-31T00:00:00Z',
+        endTime: '2024-03-20T00:00:00Z',
         videos: [
           {
             id: 'v7',

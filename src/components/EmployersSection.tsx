@@ -1,7 +1,5 @@
 import { Employer } from "@/types";
 import EmployerCard from "./EmployerCard";
-import { useAppDispatch } from "@/hooks/reduxHooks";
-import { updateEmployer } from '@/redux/counterSlice'
 
 interface EmployersSectionProps {
   employers: Employer[];
@@ -9,16 +7,6 @@ interface EmployersSectionProps {
 
 const EmployersSection = ({ employers }: EmployersSectionProps) => {
 
-    const dispatch = useAppDispatch();
-
-    const updateEmployerDetail = (currentEmployer: Employer, updatedEmployer: Partial<Employer>) => {
-        const updatedEmployersData = {
-            ...currentEmployer,
-            ...updatedEmployer
-        }
-        
-        dispatch(updateEmployer(updatedEmployersData));
-    }
 
   return (
     <div className="space-y-4">
@@ -27,7 +15,6 @@ const EmployersSection = ({ employers }: EmployersSectionProps) => {
         <EmployerCard 
           key={employer.id}
           employer={employer}
-          onUpdateEmployer={(updates) => updateEmployerDetail(employer, updates)}
         />
       ))}
     </div>

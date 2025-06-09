@@ -32,11 +32,9 @@ export const portfolioSlice = createSlice({
         },
         updateEmployer: (state, action: PayloadAction<Employer>) => {
             if (state.profile && state.profile.extractedData.employers) {
-                const updated_employers = [...state.profile.extractedData.employers];
-                updated_employers.map(employer => {
-                    if(employer.id == action.payload.id) return action.payload;
-                    else return employer;
-                })
+                const updated_employers = state.profile.extractedData.employers.map(employer => 
+                    employer.id === action.payload.id ? action.payload : employer
+                );
 
                 state.profile = {
                     ...state.profile,
