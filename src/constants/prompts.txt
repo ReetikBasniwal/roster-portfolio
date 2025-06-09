@@ -1,0 +1,45 @@
+# Portfolio Builder Prompts
+
+1. I have the following frontend technical assignment (summary below). I want to build it using Vue.js (not React/Next.js as originally preferred), and I do not want to write any backend — all API calls will be mocked.
+
+    Assignment Summary
+    Build a feature that allows talent to submit a link to their external personal portfolio site.
+
+    The system should retrieve structured data from that site (mock API call) and display it in their profile on the platform.
+
+    The profile page should have two main sections:
+
+    Basic Info: first & last name, summary/introduction
+
+    Employers/Clients: each with related videos and editable fields: job title, duration, employment type (full-time/contract dropdown), and contribution summary.
+
+    The user should be able to edit their profile inline.
+
+    No login/authentication needed.
+
+    API calls are all mocked — no backend development required.
+
+    Deliverables include code, API request documentation, demo walkthrough, and AI usage documentation.
+
+    Bonus: flexibility to support various portfolio layouts, clean UI/UX, and scalability considerations.
+
+    My Requests
+    Ask me 5 clarifying questions to better understand the assignment and my goals.
+
+    Provide a clear step-by-step guide on how to start and complete this project using Vue.js (with TypeScript if possible).
+
+    Include advice on how to mock API calls effectively in Vue.js without backend.
+
+    Suggest how to structure the Vue components and manage state.
+
+    Give tips on how to prepare the API request documentation and demo walkthrough.
+
+    Since I am not using React/Next.js, adjust the approach accordingly.
+
+    Please help me with this so I can start confidently and deliver a high-quality project.
+
+
+2. Make a mockApi file in which, it will have two functions
+    i. createPortfolio: This is suppose to extract the information of the given portfolio link 
+        (but for now you can give me a dummy response inside this).
+    ii. updatePortfolio: This is suppose to update the portfolio data.
