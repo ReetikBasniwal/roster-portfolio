@@ -15,12 +15,13 @@ export interface ExtractedPortfolioData {
 export interface BasicInfo {
   firstName: string;
   lastName: string;
+  title: string;
   summary?: string;
+  contributionSummary?: string;
   profileImage?: string;
   location?: string;
   email?: string;
-  username: string;
-  title: string;
+  username?: string;
 }
 
 export interface Employer {
@@ -28,7 +29,7 @@ export interface Employer {
   name: string;
   jobTitle: string;
   employmentType?: "full-time" | "contract" | "freelance" | "internship";
-  summary?: string;
+  contributionSummary?: string;
   videos: Video[];
   startTime?: string;
   endTime?: string;

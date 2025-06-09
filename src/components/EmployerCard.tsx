@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Briefcase, Pencil } from "lucide-react";
 import { Employer } from "@/types";
-// import EditableField from "./EditableField";
 import VideoGallery from "./VideoGallery";
 import EditableEmployerCard from "./EditableEmployerCard";
 
@@ -61,10 +60,18 @@ const EmployerCard = ({ employer }: EmployerCardProps) => {
                     />
                   </span>
                 )}
-                
               </div>
             </div>
           </div>
+
+          {employer.contributionSummary && (
+            <div className="space-y-2">
+              <span className="text-sm font-medium">Key Contributions</span>
+              <div className="text-muted-foreground leading-relaxed">
+                {employer.contributionSummary}
+              </div>
+            </div>
+          )}
         </div>
         <VideoGallery videos={employer.videos} />
       </CardContent>

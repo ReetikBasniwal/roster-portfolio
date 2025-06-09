@@ -13,8 +13,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import VideoGallery from "./VideoGallery";
-import { useAppDispatch } from "@/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
+import { updatePortfolio } from "@/api/mockApi";
+import { Textarea } from "@/components/ui/textarea";
 import { updateEmployer } from "@/redux/counterSlice";
+import { toast } from "sonner";
 
 interface EditableEmployerCardProps {
   employer: Employer;
@@ -32,6 +35,7 @@ interface FormValues {
     | undefined;
   startTime: string;
   endTime: string;
+  contributionSummary: string 
 }
 
 const formatDateForInput = (dateString: string) => {
@@ -44,6 +48,7 @@ const EditableEmployerCard: React.FC<EditableEmployerCardProps> = ({
   handleCancel,
 }) => {
   const dispatch = useAppDispatch();
+  const profile = useAppSelector((state) => state.portfolio.profile);
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -52,6 +57,7 @@ const EditableEmployerCard: React.FC<EditableEmployerCardProps> = ({
       employmentType: employer.employmentType || "full-time",
       startTime: formatDateForInput(employer.startTime || ""),
       endTime: formatDateForInput(employer.endTime || ""),
+      contributionSummary: employer.contributionSummary || ""
     },
     validate: (values: FormValues) => {
       const errors: Partial<FormValues> = {};
@@ -60,13 +66,28 @@ const EditableEmployerCard: React.FC<EditableEmployerCardProps> = ({
       return errors;
     },
     onSubmit: (values: FormValues) => {
+      if (!profile) return;
       const updatedEmployer: Employer = {
         ...employer,
         ...values,
       };
-      console.log(values, employer, updatedEmployer, "values");
-      dispatch(updateEmployer(updatedEmployer));
-      handleCancel();
+      try {
+        dispatch(updateEmployer(updatedEmployer));
+        handleCancel();
+
+        updatePortfolio(profile.id, {
+          employers: [updatedEmployer]
+        }).then((data) => {
+          console.log(data);
+          toast.success("Employer info updated successfully");
+        }).catch((error) => {
+          toast.error("Failed to update employer info");
+          console.error('Failed to update employer:', error);
+        });
+      } catch (error) {
+        toast.error("Failed to update employer info");
+        console.error('Failed to update employer:', error);
+      }
     },
   });
 
@@ -192,6 +213,19 @@ const EditableEmployerCard: React.FC<EditableEmployerCardProps> = ({
                 />
               </div>
             </div>
+
+            <div className="space-y-2">
+              <span className="text-sm font-medium">Key Contributions</span>
+              <Textarea
+                name="contributionSummary"
+                value={formik.values.contributionSummary}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Highlight your key achievements and contributions"
+                className="min-h-[100px]"
+              />
+            </div>
+            
           </div>
 
           <VideoGallery videos={employer.videos} />

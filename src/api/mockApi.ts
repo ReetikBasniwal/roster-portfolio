@@ -22,6 +22,7 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
         employmentType: 'full-time',
         startTime: '2023-12-31T00:00:00Z',
         endTime: '2024-03-20T00:00:00Z',
+        contributionSummary: 'Led video production for major brands, resulting in 40% increase in engagement. Specialized in creating viral social media content.',
         videos: [
           {
             id: 'v1',
@@ -61,6 +62,7 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
     basicInfo: {
       firstName: 'Dellin',
       lastName: 'Zhang',
+      title: 'Editor',
       summary: 'Professional video editor specializing in documentary and commercial content with expertise in storytelling and post-production.',
       profileImage: 'https://dellinzhang.com/wp-content/uploads/2023/09/dell-personal-35mm-1024x692.jpeg',
       location: 'Los Angeles, CA',
@@ -72,6 +74,7 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
         id: '4',
         name: 'Commercial Productions',
         jobTitle: 'Editor, Director, Producer, Writer',
+        contributionSummary: 'Directed and edited award-winning documentaries. Pioneered new editing techniques that improved production efficiency by 30%.',
         employmentType: 'freelance',
         videos: [
           {
@@ -118,18 +121,14 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
 }
 
 export async function extractPortfolioData(url: string): Promise<ExtractedPortfolioData> {
-  // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 2000))
-  
-  // Extract domain from URL
+
   const domain = new URL(url).hostname.replace('www.', '')
   
-  // Return mock data based on domain or default data
   if (mockPortfolioData[domain]) {
     return mockPortfolioData[domain]
   }
   
-  // Default mock data for unknown domains
   return {
     basicInfo: {
       firstName: 'John',
@@ -148,6 +147,7 @@ export async function extractPortfolioData(url: string): Promise<ExtractedPortfo
         jobTitle: 'Thumbnail Designer',
         startTime: '2023-12-31T00:00:00Z',
         endTime: '2024-03-20T00:00:00Z',
+        contributionSummary: 'Delivered high-quality video content for multiple clients, maintaining 95% client satisfaction rate.',
         videos: [
           {
             id: 'v7',
@@ -176,16 +176,32 @@ export async function createPortfolio(url: string): Promise<Portfolio> {
 }
 
 export async function updatePortfolio(portfolioId: string, updates: Partial<ExtractedPortfolioData>): Promise<Portfolio> {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  await new Promise(resolve => setTimeout(resolve, 500))
   
-  // In a real app, this would update the portfolio in the database
-  // For now, we'll just return a mock updated portfolio
+  // Find the domain that matches the portfolioId
+  const domain = Object.keys(mockPortfolioData).find(key => key === portfolioId);
+  if (!domain) {
+    throw new Error('Portfolio not found');
+  }
+
+  const existingData = mockPortfolioData[domain];
+  const updatedData: ExtractedPortfolioData = {
+    ...existingData,
+    ...updates,
+    employers: existingData.employers.map(emp => 
+      emp.id === updates.employers?.[0]?.id 
+        ? { ...emp, ...(updates.employers?.[0] || {}) }
+        : emp
+    ),
+  };
+
+  mockPortfolioData[domain] = updatedData;
+  
   return {
-    id: portfolioId,
-    url: 'https://example.com',
-    extractedData: updates as ExtractedPortfolioData,
+    id: domain,
+    url: `https://${domain}`,
+    extractedData: updatedData,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
-  }
+  };
 }
