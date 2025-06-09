@@ -1,54 +1,103 @@
-# React + TypeScript + Vite
+# Portfolio Builder Architecture
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## User Flow
 
-Currently, two official plugins are available:
+1. **Portfolio Creation**
+   - User enters a URL (e.g., 'sonuchoudhary.my.canva.site')
+   - System extracts portfolio data using `extractPortfolioData`
+   - Creates a new portfolio with unique ID and timestamps
+   - Stores data in Redux store
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+2. **Portfolio Editing**
+   - **Basic Info Section**
+     - User clicks edit button
+     - EditableBasicInfoSection component renders
+     - User updates information
+     - On save:
+       1. Updates Redux store immediately for UI responsiveness
+       2. Calls API to persist changes
+       3. Shows success/error toast notification
+   
+   - **Employer Cards**
+     - User clicks edit button on employer card
+     - EditableEmployerCard component renders
+     - User updates employer information
+     - On save:
+       1. Updates Redux store immediately
+       2. Calls API to persist changes
+       3. Shows success/error toast notification
 
-## Expanding the ESLint configuration
+## Component Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### View Components
+- `BasicInfoSection`: Displays user's basic information
+- `EmployerCard`: Displays individual employer information
+- `VideoGallery`: Displays video content for each employer
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Editable Components
+- `EditableBasicInfoSection`: Form for editing basic information
+- `EditableEmployerCard`: Form for editing employer information
+
+### Shared Components
+- `Button`, `Input`, `Textarea`: Reusable UI components
+- `Card`, `CardContent`: Layout components
+
+## State Management
+
+### Redux Store Structure
+```typescript
+interface PortfolioState {
+  profile: Portfolio | null;
+  loading: boolean;
+  error: string | null;
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Actions
+- `addProfile`: Adds new portfolio to store
+- `updateBasicInfo`: Updates basic information
+- `updateEmployer`: Updates employer information
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Data Flow
+1. **Read Operations**
+   - Components read data from Redux store using `useAppSelector`
+   - Data is normalized and cached in store
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+2. **Write Operations**
+   - Components dispatch actions to update store
+   - API calls are made to persist changes
+   - Store is updated with API response
+
+## Scalability & Edge Cases
+
+### Scalability Considerations
+1. **Data Structure**
+   - Portfolio data is normalized
+   - Efficient updates using immutable patterns
+   - Minimal re-renders through proper state management
+
+2. **Performance**
+   - Immediate UI updates with optimistic updates
+   - API calls are debounced/throttled
+   - Large datasets handled through pagination
+
+3. **Code Organization**
+   - Components are modular and reusable
+   - Clear separation of concerns
+   - Type safety with TypeScript
+
+### Edge Case Handling
+1. **Error States**
+   - API failures handled with error boundaries
+   - Toast notifications for user feedback
+   - Fallback UI for loading states
+
+2. **Data Validation**
+   - Form validation using Formik
+   - Type checking with TypeScript
+   - API response validation
+
+3. **Concurrent Updates**
+   - Optimistic updates prevent UI blocking
+   - Error handling for failed updates
+   - State rollback on failure
