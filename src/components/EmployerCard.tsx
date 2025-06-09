@@ -61,10 +61,18 @@ const EmployerCard = ({ employer }: EmployerCardProps) => {
                     />
                   </span>
                 )}
-                
               </div>
             </div>
           </div>
+
+          {employer.contributionSummary && (
+            <div className="space-y-2">
+              <span className="text-sm font-medium">Key Contributions</span>
+              <div className="text-muted-foreground leading-relaxed">
+                {employer.contributionSummary}
+              </div>
+            </div>
+          )}
         </div>
         <VideoGallery videos={employer.videos} />
       </CardContent>

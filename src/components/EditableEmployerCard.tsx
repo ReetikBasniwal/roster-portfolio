@@ -15,6 +15,7 @@ import {
 import VideoGallery from "./VideoGallery";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { updateEmployer } from "@/redux/counterSlice";
+import { Textarea } from "@/components/ui/textarea";
 
 interface EditableEmployerCardProps {
   employer: Employer;
@@ -32,6 +33,7 @@ interface FormValues {
     | undefined;
   startTime: string;
   endTime: string;
+  contributionSummary: string 
 }
 
 const formatDateForInput = (dateString: string) => {
@@ -52,6 +54,7 @@ const EditableEmployerCard: React.FC<EditableEmployerCardProps> = ({
       employmentType: employer.employmentType || "full-time",
       startTime: formatDateForInput(employer.startTime || ""),
       endTime: formatDateForInput(employer.endTime || ""),
+      contributionSummary: employer.contributionSummary || ""
     },
     validate: (values: FormValues) => {
       const errors: Partial<FormValues> = {};
@@ -192,6 +195,19 @@ const EditableEmployerCard: React.FC<EditableEmployerCardProps> = ({
                 />
               </div>
             </div>
+
+            <div className="space-y-2">
+              <span className="text-sm font-medium">Key Contributions</span>
+              <Textarea
+                name="contributionSummary"
+                value={formik.values.contributionSummary}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Highlight your key achievements and contributions"
+                className="min-h-[100px]"
+              />
+            </div>
+            
           </div>
 
           <VideoGallery videos={employer.videos} />

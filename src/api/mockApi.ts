@@ -22,6 +22,7 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
         employmentType: 'full-time',
         startTime: '2023-12-31T00:00:00Z',
         endTime: '2024-03-20T00:00:00Z',
+        contributionSummary: 'Led video production for major brands, resulting in 40% increase in engagement. Specialized in creating viral social media content.',
         videos: [
           {
             id: 'v1',
@@ -61,6 +62,7 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
     basicInfo: {
       firstName: 'Dellin',
       lastName: 'Zhang',
+      title: 'Editor',
       summary: 'Professional video editor specializing in documentary and commercial content with expertise in storytelling and post-production.',
       profileImage: 'https://dellinzhang.com/wp-content/uploads/2023/09/dell-personal-35mm-1024x692.jpeg',
       location: 'Los Angeles, CA',
@@ -72,6 +74,7 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
         id: '4',
         name: 'Commercial Productions',
         jobTitle: 'Editor, Director, Producer, Writer',
+        contributionSummary: 'Directed and edited award-winning documentaries. Pioneered new editing techniques that improved production efficiency by 30%.',
         employmentType: 'freelance',
         videos: [
           {
@@ -148,6 +151,7 @@ export async function extractPortfolioData(url: string): Promise<ExtractedPortfo
         jobTitle: 'Thumbnail Designer',
         startTime: '2023-12-31T00:00:00Z',
         endTime: '2024-03-20T00:00:00Z',
+        contributionSummary: 'Delivered high-quality video content for multiple clients, maintaining 95% client satisfaction rate.',
         videos: [
           {
             id: 'v7',
