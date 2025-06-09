@@ -11,6 +11,10 @@ const VideoGallery = ({ videos, className = '' }: VideoGalleryProps) => {
     return null;
   }
 
+  const handleOpenVideo = (url: string) => {
+    window.open(url);
+  }
+
   return (
     <div className={className}>
       <h4 className="font-semibold mb-3 flex items-center gap-2">
@@ -27,7 +31,7 @@ const VideoGallery = ({ videos, className = '' }: VideoGalleryProps) => {
                 className="w-full h-32 object-cover group-hover:scale-105 transition-transform"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                <Play className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Play className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => handleOpenVideo(video.url)}/>
               </div>
             </div>
             <div className="mt-2">
