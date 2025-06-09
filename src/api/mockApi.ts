@@ -128,7 +128,7 @@ export async function extractPortfolioData(url: string): Promise<ExtractedPortfo
   if (mockPortfolioData[domain]) {
     return mockPortfolioData[domain]
   }
-  
+
   return {
     basicInfo: {
       firstName: 'John',
@@ -194,8 +194,6 @@ export async function updatePortfolio(portfolioId: string, updates: Partial<Extr
         : emp
     ),
   };
-
-  mockPortfolioData[domain] = updatedData;
   
   return {
     id: domain,
