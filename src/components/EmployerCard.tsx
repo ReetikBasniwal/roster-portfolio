@@ -1,7 +1,8 @@
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 // import { Badge } from "@/components/ui/badge";
-import { Briefcase } from "lucide-react";
+import { Briefcase, Pencil } from "lucide-react";
 import { Employer } from "@/types";
 import EditableField from "./EditableField";
 import VideoGallery from "./VideoGallery";
@@ -12,6 +13,8 @@ interface EmployerCardProps {
 }
 
 const EmployerCard = ({ employer, onUpdateEmployer }: EmployerCardProps) => {
+  const [isEditingType, setIsEditingType] = React.useState(false);
+
   return (
     <Card>
       <CardHeader>
@@ -30,42 +33,50 @@ const EmployerCard = ({ employer, onUpdateEmployer }: EmployerCardProps) => {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          {employer.jobTitle ? <EditableField
+          <EditableField
             label="Job Title"
-            value={employer.jobTitle}
+            value={employer.jobTitle??''}
             onSave={(value) => onUpdateEmployer({ jobTitle: value })}
             placeholder="Enter job title"
             displayClassName="text-lg font-semibold"
-          /> : <></>}
-          
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Employment Type</label>
-              {/* <Select
-                value={employer.employmentType}
-                onValueChange={(value: 'Full-time' | 'Contract') => 
-                  onUpdateEmployer({ employmentType: value })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Full-time">Full-time</SelectItem>
-                  <SelectItem value="Contract">Contract</SelectItem>
-                </SelectContent>
-              </Select> */}
+              <div className="flex items-center gap-2">
+                {!isEditingType ? (
+                  <div className="flex items-center gap-2 group">
+                    <span className="text-muted-foreground">
+                      {employer.employmentType || 'Freelance'}
+                    </span>
+                    <button 
+                      onClick={() => setIsEditingType(true)}
+                      className="p-1 hover:bg-muted rounded-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <Select
+                    value={employer.employmentType}
+                    onValueChange={(value: 'Full-time' | 'Contract' | 'Freelance' | 'Internship') => {
+                      onUpdateEmployer({ employmentType: value });
+                      setIsEditingType(false);
+                    }}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Full-time">Full-time</SelectItem>
+                      <SelectItem value="Contract">Contract</SelectItem>
+                      <SelectItem value="Freelance">Freelance</SelectItem>
+                      <SelectItem value="Internship">Internship</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
             </div>
           </div>
-
-          {/* <EditableField
-            label="Contribution Summary"
-            value={employer.summary??''}
-            onSave={(value) => onUpdateEmployer({ summary: value })}
-            type="textarea"
-            placeholder="Describe your contributions and achievements"
-            displayClassName="text-muted-foreground leading-relaxed"
-          /> */}
         </div>
 
         <VideoGallery videos={employer.videos} />

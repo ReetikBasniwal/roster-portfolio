@@ -27,7 +27,7 @@ export interface Employer {
   id: string;
   name: string;
   jobTitle: string;
-  employmentType?: "full-time" | "contract" | "freelance" | "internship";
+  employmentType?: "Full-time" | "Contract" | "Freelance" | "Internship";
   summary?: string;
   videos: Video[];
 }
