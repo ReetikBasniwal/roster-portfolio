@@ -1,4 +1,4 @@
-import { BasicInfo, Portfolio } from '@/types'
+import { BasicInfo, Employer, Portfolio } from '@/types'
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
@@ -12,7 +12,6 @@ const initialState: PortfolioState = {
 
 export const portfolioSlice = createSlice({
     name: 'portfolio',
-    // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
         addProfile: (state, action: PayloadAction<Portfolio | null>) => {
@@ -30,10 +29,25 @@ export const portfolioSlice = createSlice({
                     }
                 }
             }
-        }
+        },
+        updateEmployer: (state, action: PayloadAction<Employer>) => {
+            if (state.profile && state.profile.extractedData.employers) {
+                const updated_employers = state.profile.extractedData.employers.map(employer => 
+                    employer.id === action.payload.id ? action.payload : employer
+                );
+
+                state.profile = {
+                    ...state.profile,
+                    extractedData: {
+                        ...state.profile.extractedData,
+                        employers: updated_employers,
+                    }
+                }
+            }
+        },
     },
 })
 
-export const { addProfile, updateBasicInfo } = portfolioSlice.actions
+export const { addProfile, updateBasicInfo, updateEmployer } = portfolioSlice.actions
 
 export default portfolioSlice.reducer
