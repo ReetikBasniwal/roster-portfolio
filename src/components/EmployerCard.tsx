@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Briefcase, Pencil } from "lucide-react";
 import { Employer } from "@/types";
-// import EditableField from "./EditableField";
 import VideoGallery from "./VideoGallery";
 import EditableEmployerCard from "./EditableEmployerCard";
 

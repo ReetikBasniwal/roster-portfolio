@@ -121,18 +121,14 @@ const mockPortfolioData: Record<string, ExtractedPortfolioData> = {
 }
 
 export async function extractPortfolioData(url: string): Promise<ExtractedPortfolioData> {
-  // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 2000))
-  
-  // Extract domain from URL
+
   const domain = new URL(url).hostname.replace('www.', '')
   
-  // Return mock data based on domain or default data
   if (mockPortfolioData[domain]) {
     return mockPortfolioData[domain]
   }
   
-  // Default mock data for unknown domains
   return {
     basicInfo: {
       firstName: 'John',
